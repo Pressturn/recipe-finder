@@ -1,8 +1,8 @@
 import './App.css'
 import { Routes, Route } from "react-router-dom"
 import Header from './components/Header/Header'
-import HomePage from "./components/HomePage/HomePage"
-import FavouritePage from "./components/FavouritePage/FavouritePage"
+import HomePage from "./pages/HomePage/HomePage"
+import FavouritePage from "./pages/FavouritePage/FavouritePage"
 
 function App() {
 
