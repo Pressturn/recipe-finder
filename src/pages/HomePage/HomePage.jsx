@@ -22,8 +22,8 @@ function HomePage() {
             <ul>
                 {searchResults.map((meal) => (
                     <RecipeCard
-                        key={meal.idMeal}
-                        id={meal.idMeal}
+                        key={meal.idMeal} // for react rendering engine
+                        id={meal.idMeal} 
                         title={meal.strMeal}
                         thumbnail={meal.strMealThumb}
                     />
