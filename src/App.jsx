@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom"
 import Header from './components/Header/Header'
 import HomePage from "./pages/HomePage/HomePage"
 import FavouritePage from "./pages/FavouritePage/FavouritePage"
-import TestEnv from './components/TestEnv'
 
 function App() {
 
@@ -14,7 +13,6 @@ function App() {
         <Route path='/' element={<HomePage />} />
         <Route path="/favourites" element={<FavouritePage />} />
       </Routes>
-      <TestEnv/>
     </>
   )
 }

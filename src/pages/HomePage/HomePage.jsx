@@ -1,5 +1,6 @@
 import { searchMealsByName } from "../../services/mealdbService"
 import { useState } from "react"
+import RecipeCard from "../../components/RecipeCard/RecipeCard"
 
 function HomePage() {
     const [searchTerm, setSearchTerm] = useState("")
@@ -20,7 +21,12 @@ function HomePage() {
 
             <ul>
                 {searchResults.map((meal) => (
-                    <li key={meal.idMeal}>{meal.strMeal}</li>
+                    <RecipeCard
+                        key={meal.idMeal}
+                        id={meal.idMeal}
+                        title={meal.strMeal}
+                        thumbnail={meal.strMealThumb}
+                    />
                 ))}
             </ul>
         </div>
