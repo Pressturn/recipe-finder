@@ -4,5 +4,3 @@ const TABLE_NAME = import.meta.env.VITE_AIRTABLE_TABLE;
 
 const BASE_URL = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}`
 
-
-
