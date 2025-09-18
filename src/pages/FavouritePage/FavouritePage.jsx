@@ -1,6 +1,6 @@
 import React from 'react'
-import FavouriteCard from '../../components/FavouriteCard/FavouriteCard'
 import { useState } from 'react'
+import RecipeCard from '../../components/RecipeCard/RecipeCard'
 
 function FavouritePage() {
   const [items, setItems] = useState([
@@ -26,7 +26,7 @@ function FavouritePage() {
     <div>
       <h1>Favourites</h1>
       {items.map(item => (
-        <FavouriteCard
+        <RecipeCard
           key={item.id}
           id={item.id}
           title={item.title}

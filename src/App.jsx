@@ -8,21 +8,23 @@ import { useState } from 'react'
 function App() {
   const [favourites, setFavourites] = useState([])
 
-  function addFavourite(meal) {
+  function onSave(meal) {
     const fav = {
       id: meal.idMeal,
       title: meal.strMeal,
       thumbnail: meal.strMealThumb,
     }
 
-  setFavourites(prev =>
-    prev.some(item => item.id === fav.id) ? prev : [...prev, fav]
-  )
-}
+    setFavourites(prev => {
+      prev.some(item => item.id === fav.id) ? prev : [...prev, fav]
+      console.log("i have saved to favourite:")
+     
+    })
+  }
 
-function removeFavourite(id) {
-  setFavourites(prev => prev.filter(item => item.id !== id))
-}
+  function onDelete(id) {
+    setFavourites(prev => prev.filter(item => item.id !== id))
+  }
 
   return (
     <>
@@ -31,7 +33,7 @@ function removeFavourite(id) {
         <Route
           path='/'
           element={
-            <HomePage onAdd={addFavourite} />
+            <HomePage onSave={onSave} />
           }
         />
 
@@ -40,7 +42,7 @@ function removeFavourite(id) {
           element={
             <FavouritePage
               items={favourites}
-              onDelete={removeFavourite} />
+              onDelete={onDelete} />
           }
         />
       </Routes>

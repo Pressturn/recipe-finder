@@ -2,7 +2,7 @@ import { searchMealsByName } from "../../services/mealdbService"
 import { useState } from "react"
 import RecipeCard from "../../components/RecipeCard/RecipeCard"
 
-function HomePage() {
+function HomePage({ onSave }) {
     const [searchTerm, setSearchTerm] = useState("")
     const [searchResults, setsearchResults] = useState([])
 
@@ -22,14 +22,15 @@ function HomePage() {
             <ul>
                 {searchResults.map((meal) => (
                     <RecipeCard
-                        key={meal.idMeal} // for react rendering engine
-                        id={meal.idMeal} 
+                        key={meal.idMeal}
+                        id={meal.idMeal}
                         title={meal.strMeal}
                         thumbnail={meal.strMealThumb}
+                        onSave={() => onSave(meal)}
                     />
                 ))}
             </ul>
-        </div>
+        </div >
 
     )
 }
