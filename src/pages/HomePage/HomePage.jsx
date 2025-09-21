@@ -2,13 +2,13 @@ import { searchMealsByName } from "../../services/mealdbService"
 import { useState } from "react"
 import RecipeCard from "../../components/RecipeCard/RecipeCard"
 
-function HomePage({ onSave }) {
+function HomePage({ onSave, favourites = [] }) {
     const [searchTerm, setSearchTerm] = useState("")
-    const [searchResults, setsearchResults] = useState([])
+    const [searchResults, setSearchResults] = useState([])
 
     async function handleSearch() {
         const meals = await searchMealsByName(searchTerm)
-        setsearchResults(meals)
+        setSearchResults(meals)
     }
 
     return (
@@ -19,17 +19,18 @@ function HomePage({ onSave }) {
                 onChange={(event) => setSearchTerm(event.target.value)} />
             <button onClick={handleSearch}>Search</button>
 
-            <ul>
-                {searchResults.map((meal) => (
+            {searchResults
+                .filter((meal) => !favourites.some((fav) => fav.id === meal.idMeal))
+                .map((meal) => (
                     <RecipeCard
                         key={meal.idMeal}
                         id={meal.idMeal}
                         title={meal.strMeal}
                         thumbnail={meal.strMealThumb}
-                        onSave={() => onSave(meal)}
+                        onSave={onSave}
                     />
                 ))}
-            </ul>
+
         </div >
 
     )

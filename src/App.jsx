@@ -8,20 +8,14 @@ import { useState } from 'react'
 function App() {
   const [favourites, setFavourites] = useState([])
 
-  function onSave(meal) {
-    const fav = {
-      id: meal.idMeal,
-      title: meal.strMeal,
-      thumbnail: meal.strMealThumb,
-    }
-
+   function onSave(fav) {
     setFavourites(prev => {
-      prev.some(item => item.id === fav.id) ? prev : [...prev, fav]
-      console.log("i have saved to favourite:")
-     
+      const next = prev.some(item => item.id === fav.id) ? prev : [...prev, fav]
+      return next
     })
   }
 
+  
   function onDelete(id) {
     setFavourites(prev => prev.filter(item => item.id !== id))
   }
@@ -33,7 +27,9 @@ function App() {
         <Route
           path='/'
           element={
-            <HomePage onSave={onSave} />
+            <HomePage 
+            onSave={onSave}
+            favourites={favourites} />
           }
         />
 
