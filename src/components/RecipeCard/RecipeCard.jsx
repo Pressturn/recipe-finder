@@ -3,7 +3,6 @@ import React from 'react'
 function RecipeCard({ mealId, title, thumb, onSave, onDelete }) {
     function handleSave() {
         const fav = { mealId: mealId, title, thumb: thumb }
-        console.log("recipe card check", fav)
         onSave && onSave(fav)
     }
 
