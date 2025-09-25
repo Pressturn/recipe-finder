@@ -12,9 +12,9 @@ function FavouritePage({ items, onDelete }) {
         items.map(item => (
           <RecipeCard
             key={item.id}
-            id={item.id}
+            mealId={item.mealId}
             title={item.title}
-            thumbnail={item.thumbnail}
+            thumb={item.thumb}
             onDelete={() => onDelete(item.id)}
           />
         ))

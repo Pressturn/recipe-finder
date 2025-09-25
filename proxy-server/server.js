@@ -1,70 +1,120 @@
-// bring in the libraries we need
-import express from "express"   // Express lets us make a server quickly
-import cors from "cors"         // CORS lets React (on a different port) talk to this server
-import dotenv from "dotenv"     // dotenv loads variables from .env file into process.env
+// load my keys from env into the project
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
 
-// load .env variables (like AIRTABLE_API_KEY) so we can use them in this file
-dotenv.config()
+// create an instance of express
+const app = express();
+// define the port
+const PORT = 3001;
 
-// create the server instance
-const app = express()
+// allow frontend (React) to call this server
+app.use(cors());
+// parse JSON data coming from frontend
+app.use(express.json());
 
-app.use(cors())          // allow requests from other origins (like http://localhost:5173 for Vite)
-app.use(express.json())  // automatically parse JSON request bodies into JavaScript objects
+// Airtable Base URL and API key
+const AIRTABLE_BASE_URL = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE_ID}`;
+const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
+const AIRTABLE_TABLE = process.env.AIRTABLE_TABLE;
 
-// when we visit http://localhost:3001/api/health
-// request = what the client sends
-// response = what we send back
-// response.json({ ok: true }) means: reply with JSON { "ok": true }
-app.get("/api/health", function (request, response) {
-  response.json({ ok: true })
-})
+// ---------------- ROUTES ----------------
 
-// get Airtable values from environment variables (hidden in .env file)
-const { AIRTABLE_API_KEY, AIRTABLE_BASE_ID, AIRTABLE_TABLE } = process.env
+// health check (optional)
+app.get("/health", (req, res) => {
+  res.json({ ok: true });
+});
 
-// build the Airtable API base URL
-const AIRTABLE_URL = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${AIRTABLE_TABLE}`
+// get all favourites
+app.get("/api/favourites", async (req, res) => {
+  try {
+    const response = await fetch(`${AIRTABLE_BASE_URL}/${AIRTABLE_TABLE}`, {
+      headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}` },
+    });
 
-// POST route to create a new favourite
-// client will send { id, title, thumbnail }
-// we forward that data to Airtable using fetch
-app.post("/api/favourites", async function (request, response) {
-  // request.body contains the JSON the frontend sent
-  const fields = request.body
+    if (!response.ok) {
+      throw new Error("Failed to fetch favourites");
+    }
 
-  // make a POST request to Airtable
-  const airtableResponse = await fetch(AIRTABLE_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${AIRTABLE_API_KEY}`, // send the secret key
-      "Content-Type": "application/json",          // tell Airtable we are sending JSON
-    },
-    body: JSON.stringify({ fields: fields }),     // wrap fields in {fields: ...}
-  })
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("Error fetching favourites:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
-  // get Airtable’s reply and pass it back to the frontend
-  const data = await airtableResponse.json()
-  response.json(data)
-})
+// add a favourite
+app.post("/api/favourites", async (req, res) => {
+  try {
+    console.log("POST body:", req.body);
 
-// GET /api/favourites
-// Purpose: fetch all saved favourites from Airtable
-app.get("/api/favourites", async (request, response) => {
-  // call Airtable API with just a GET
-  const airtableResponse = await fetch(AIRTABLE_URL, {
-    headers: {
-      Authorization: `Bearer ${AIRTABLE_API_KEY}`,  // secret key
-    },
-  })
+    const { mealId, title, thumb } = req.body;
 
-  // pass Airtable’s reply straight back to the frontend
-  const data = await airtableResponse.json()
-  response.json(data)
-})
+    const response = await fetch(`${AIRTABLE_BASE_URL}/${AIRTABLE_TABLE}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fields: { mealId, title, thumb },
+      }),
+    });
 
-// finally, start the server on port 3001
-// app.listen(port, callbackFunction)
-app.listen(3001, () => {
-  console.log("✅ server running on http://localhost:3001")
-})
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("Error creating favourite:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// delete a favourite
+app.delete("/api/favourites/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const response = await fetch(`${AIRTABLE_BASE_URL}/${AIRTABLE_TABLE}/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}` },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to delete favourite");
+    }
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("Error deleting favourite:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// update a favourite (optional: only works if Airtable has matching field)
+app.patch("/api/favourites/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const response = await fetch(`${AIRTABLE_BASE_URL}/${AIRTABLE_TABLE}/${id}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ fields: req.body }),
+    });
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("Error updating favourite:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// start server
+app.listen(PORT, () => {
+  console.log(`listening on http://localhost:${PORT}`);
+});

@@ -1,17 +1,22 @@
 import React from 'react'
 
-function RecipeCard({ id, title, thumbnail, onSave, onDelete }) {
+function RecipeCard({ mealId, title, thumb, onSave, onDelete }) {
+    function handleSave() {
+        const fav = { mealId: mealId, title, thumb: thumb }
+        console.log("recipe card check", fav)
+        onSave && onSave(fav)
+    }
 
     return (
         <div>
             <img
-                src={thumbnail}
+                src={thumb}
                 alt={title} />
             <p>{title}</p>
 
-            {onSave && <button onClick={() => onSave({ id, title, thumbnail })}>Save</button>}
+            {onSave && <button onClick={handleSave} >Save</button>}
 
-            {onDelete && <button onClick={() => onDelete(id)}>Delete</button>}
+            {onDelete && <button onClick={() => onDelete(mealId)}>Delete</button>}
 
         </div>
     )

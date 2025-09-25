@@ -1,49 +1,73 @@
-import './App.css'
-import { Routes, Route } from "react-router-dom"
-import Header from './components/Header/Header'
-import HomePage from "./pages/HomePage/HomePage"
-import FavouritePage from "./pages/FavouritePage/FavouritePage"
-import { useState } from 'react'
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import Header from "./components/Header/Header";
+import HomePage from "./pages/HomePage/HomePage";
+import FavouritePage from "./pages/FavouritePage/FavouritePage";
+import { useState, useEffect } from "react";
+import { getFavourites, createFavourite, deleteFavourite, } from "./services/airtableService";
 
 function App() {
-  const [favourites, setFavourites] = useState([])
+  const [favourites, setFavourites] = useState([]);
 
-   function onSave(fav) {
-    setFavourites(prev => {
-      const next = prev.some(item => item.id === fav.id) ? prev : [...prev, fav]
-      return next
-    })
-  }
+  const loadFavourites = async () => {
+    try {
+      const data = await getFavourites();
 
-  
-  function onDelete(id) {
-    setFavourites(prev => prev.filter(item => item.id !== id))
+      // Airtable returns { records: [...] }. Convert to a simple array.
+      const items = data.records
+        ? data.records.map((record) => ({ id: record.id, ...record.fields }))
+        : data;
+
+      setFavourites(items);
+    } catch (error) {
+      console.error("Failed to load favourites:", error);
+    }
+  };
+
+const addFavourite = async (meal) => {
+  const mealId = meal.mealId;
+  const title = meal.title;
+  const thumb = meal.thumb;
+
+  try {
+    const result = await createFavourite({ mealId, title, thumb });
+    // Airtable responds with { id, fields: {...} }
+    const newItem = { id: result.id, ...result.fields };
+
+    setFavourites((prev) => [...prev, newItem]);
+  } catch (error) {
+    console.error("Error adding meal:", error);
   }
+};
+
+  const removeFavourite = async (id) => {
+    try {
+      await deleteFavourite(id);
+      setFavourites((prev) => prev.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error("Failed to delete favourite:", error);
+    }
+  };
+
+  useEffect(() => {
+    loadFavourites();
+  }, []);
 
   return (
     <>
       <Header />
       <Routes>
         <Route
-          path='/'
-          element={
-            <HomePage 
-            onSave={onSave}
-            favourites={favourites} />
-          }
+          path="/"
+          element={<HomePage onSave={addFavourite} favourites={favourites} />}
         />
-
         <Route
           path="/favourites"
-          element={
-            <FavouritePage
-              items={favourites}
-              onDelete={onDelete} />
-          }
+          element={<FavouritePage items={favourites} onDelete={removeFavourite} />}
         />
       </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

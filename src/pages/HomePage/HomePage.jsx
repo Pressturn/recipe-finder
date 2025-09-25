@@ -24,9 +24,9 @@ function HomePage({ onSave, favourites = [] }) {
                 .map((meal) => (
                     <RecipeCard
                         key={meal.idMeal}
-                        id={meal.idMeal}
+                        mealId={meal.idMeal}   
                         title={meal.strMeal}
-                        thumbnail={meal.strMealThumb}
+                        thumb={meal.strMealThumb}
                         onSave={onSave}
                     />
                 ))}
