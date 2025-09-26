@@ -7,17 +7,16 @@ function RecipeCard({ mealId, title, thumb, onSave, onDelete }) {
     }
 
     return (
-        <div>
+<>
             <img
                 src={thumb}
                 alt={title} />
             <p>{title}</p>
 
             {onSave && <button onClick={handleSave} >Save</button>}
-
             {onDelete && <button onClick={() => onDelete(mealId)}>Delete</button>}
+        </>
 
-        </div>
     )
 }
 

@@ -10,7 +10,6 @@ async function searchMealsByName(searchTerm) {
         }
 
         const data = await response.json();
-
         if (!data.meals) {
             return [];
         }
@@ -20,8 +19,6 @@ async function searchMealsByName(searchTerm) {
         console.error('Error fetching data', error);
         return [];
     }
-
-
 }
 
 export { searchMealsByName }

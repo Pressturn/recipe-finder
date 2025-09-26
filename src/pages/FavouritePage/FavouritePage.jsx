@@ -1,5 +1,6 @@
 import React from 'react'
 import RecipeCard from "../../components/RecipeCard/RecipeCard"
+import { Link } from "react-router-dom"
 
 function FavouritePage({ items, onDelete }) {
   return (
@@ -9,15 +10,24 @@ function FavouritePage({ items, onDelete }) {
       {items.length === 0 ? (
         <p>No favourites yet</p>
       ) : (
-        items.map(item => (
-          <RecipeCard
-            key={item.id}
-            mealId={item.mealId}
-            title={item.title}
-            thumb={item.thumb}
-            onDelete={() => onDelete(item.id)}
-          />
-        ))
+        <div>
+        {items.map(item => (
+          <div key={item.id}>
+            <RecipeCard
+              mealId={item.mealId}
+              title={item.title}
+              thumb={item.thumb}
+              onDelete={() => onDelete(item.id)}
+              />
+
+            <div>
+              <Link to="/details" state={{ mealId: item.mealId }}>
+                <button>View</button>
+              </Link>
+            </div>
+          </div>
+          ))}
+        </div>
       )}
     </div>
   )

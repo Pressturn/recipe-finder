@@ -1,6 +1,7 @@
 import { searchMealsByName } from "../../services/mealdbService"
 import { useState } from "react"
 import RecipeCard from "../../components/RecipeCard/RecipeCard"
+import { Link } from "react-router-dom"
 
 function HomePage({ onSave, favourites = [] }) {
     const [searchTerm, setSearchTerm] = useState("")
@@ -18,22 +19,25 @@ function HomePage({ onSave, favourites = [] }) {
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)} />
             <button onClick={handleSearch}>Search</button>
+            <div>
+                {searchResults
+                    .filter((meal) => !favourites.some((fav) => fav.id === meal.idMeal))
+                    .map((meal) => (
+                        <div key={meal.idMeal}>
+                            <RecipeCard
+                                mealId={meal.idMeal}
+                                title={meal.strMeal}
+                                thumb={meal.strMealThumb}
+                                onSave={onSave} />
 
-            {searchResults
-                .filter((meal) => !favourites.some((fav) => fav.id === meal.idMeal))
-                .map((meal) => (
-                    <RecipeCard
-                        key={meal.idMeal}
-                        mealId={meal.idMeal}   
-                        title={meal.strMeal}
-                        thumb={meal.strMealThumb}
-                        onSave={onSave}
-                    />
+                            <Link to="/details" state={{ meal }}>
+                                <button>View</button>
+                            </Link>
+                        </div>
                 ))}
-
-        </div >
-
-    )
+        </div>
+</div >
+            )
 }
 
 export default HomePage

@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import FavouritePage from "./pages/FavouritePage/FavouritePage";
 import { useState, useEffect } from "react";
 import { getFavourites, createFavourite, deleteFavourite, } from "./services/airtableService";
+import RecipeDetails from "./pages/RecipeDetails/RecipeDetails";
 
 function App() {
   const [favourites, setFavourites] = useState([]);
@@ -24,21 +25,21 @@ function App() {
     }
   };
 
-const addFavourite = async (meal) => {
-  const mealId = meal.mealId;
-  const title = meal.title;
-  const thumb = meal.thumb;
+  const addFavourite = async (meal) => {
+    const mealId = meal.mealId;
+    const title = meal.title;
+    const thumb = meal.thumb;
 
-  try {
-    const result = await createFavourite({ mealId, title, thumb });
-    // Airtable responds with { id, fields: {...} }
-    const newItem = { id: result.id, ...result.fields };
+    try {
+      const result = await createFavourite({ mealId, title, thumb });
+      // Airtable responds with { id, fields: {...} }
+      const newItem = { id: result.id, ...result.fields };
 
-    setFavourites((prev) => [...prev, newItem]);
-  } catch (error) {
-    console.error("Error adding meal:", error);
-  }
-};
+      setFavourites((prev) => [...prev, newItem]);
+    } catch (error) {
+      console.error("Error adding meal:", error);
+    }
+  };
 
   const removeFavourite = async (id) => {
     try {
@@ -65,6 +66,9 @@ const addFavourite = async (meal) => {
           path="/favourites"
           element={<FavouritePage items={favourites} onDelete={removeFavourite} />}
         />
+        <Route
+          path="/details"
+          element={<RecipeDetails />} />
       </Routes>
     </>
   );
