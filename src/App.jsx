@@ -14,64 +14,73 @@ function App() {
     try {
       const data = await getFavourites();
 
-      // Airtable returns { records: [...] }. Convert to a simple array.
+      // Convert Airtable format to a simple array.
       const items = data.records
-        ? data.records.map((record) => ({ id: record.id, ...record.fields }))
+        ? data.records.map((record) => ({
+          id: record.id,
+          ...record.fields
+        }))
         : data;
 
-      setFavourites(items);
+      setFavourites(items)
     } catch (error) {
-      console.error("Failed to load favourites:", error);
+      setFavourites([])
     }
+
   };
 
+  // Add a recipe to favourites
   const addFavourite = async (meal) => {
-    const mealId = meal.mealId;
-    const title = meal.title;
-    const thumb = meal.thumb;
-
     try {
-      const result = await createFavourite({ mealId, title, thumb });
-      // Airtable responds with { id, fields: {...} }
-      const newItem = { id: result.id, ...result.fields };
+      const result = await createFavourite({
+        mealId: meal.mealId,
+        title: meal.title,
+        thumb: meal.thumb,
+      })
 
-      setFavourites((prev) => [...prev, newItem]);
+      const newItem = { id: result.id, ...result.fields }
+      setFavourites((prev) => [...prev, newItem])
     } catch (error) {
-      console.error("Error adding meal:", error);
     }
-  };
+  }
 
+  // Remove a recipe from favourites
   const removeFavourite = async (id) => {
     try {
-      await deleteFavourite(id);
-      setFavourites((prev) => prev.filter((item) => item.id !== id));
+      await deleteFavourite(id)
+      setFavourites((prev) => prev.filter((item) => item.id !== id))
     } catch (error) {
-      console.error("Failed to delete favourite:", error);
+      console.error("Failed to delete favourite:", error)
     }
   };
 
+
+  // Load favourites when app starts
   useEffect(() => {
     loadFavourites();
   }, []);
 
   return (
-    <>
+    <div className="App" >
       <Header />
-      <Routes>
-        <Route
-          path="/"
-          element={<HomePage onSave={addFavourite} favourites={favourites} />}
-        />
-        <Route
-          path="/favourites"
-          element={<FavouritePage items={favourites} onDelete={removeFavourite} />}
-        />
-        <Route
-          path="/details"
-          element={<RecipeDetails />} />
-      </Routes>
-    </>
-  );
+      <main>
+        <Routes>
+          <Route
+            path="/"
+            element={<HomePage onSave={addFavourite} favourites={favourites} />}
+          />
+          <Route
+            path="/favourites"
+            element={<FavouritePage items={favourites} onDelete={removeFavourite} />}
+          />
+          <Route
+            path="/recipe/:mealId"
+            element={<RecipeDetails />}
+          />
+        </Routes>
+      </main>
+    </div >
+  )
 }
 
 export default App;

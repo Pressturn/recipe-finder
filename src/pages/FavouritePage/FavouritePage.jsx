@@ -11,21 +11,21 @@ function FavouritePage({ items, onDelete }) {
         <p>No favourites yet</p>
       ) : (
         <div>
-        {items.map(item => (
-          <div key={item.id}>
-            <RecipeCard
-              mealId={item.mealId}
-              title={item.title}
-              thumb={item.thumb}
-              onDelete={() => onDelete(item.id)}
+          {items.map(item => (
+            <div key={item.id}>
+              <RecipeCard
+                mealId={item.mealId}
+                title={item.title}
+                thumb={item.thumb}
+                onDelete={() => onDelete(item.id)}
               />
 
-            <div>
-              <Link to="/details" state={{ mealId: item.mealId }}>
-                <button>View</button>
-              </Link>
+              <div>
+                <Link to={`/recipe/${item.mealId}`}>
+                  <button>View</button>
+                </Link>
+              </div>
             </div>
-          </div>
           ))}
         </div>
       )}

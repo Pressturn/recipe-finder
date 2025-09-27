@@ -1,7 +1,6 @@
 const BASE_URL = "https://www.themealdb.com/api/json/v1/1/search.php?s="
 
 async function searchMealsByName(searchTerm) {
-
     try {
         const response = await fetch(`${BASE_URL}${searchTerm}`)
 
@@ -21,4 +20,20 @@ async function searchMealsByName(searchTerm) {
     }
 }
 
-export { searchMealsByName }
+async function getMealById(mealId) {
+    try {
+        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
+        const data = await response.json()
+        
+        if (!data.meals) {
+            return null
+        }
+        
+        return data.meals[0]
+    } catch (error) {
+        console.error("Failed to get meal:", error)
+        return null
+    }
+}
+
+export { searchMealsByName, getMealById }

@@ -1,10 +1,24 @@
-import React from 'react'
-import { useLocation, Link } from "react-router-dom"
+import { useParams, Link } from "react-router-dom"
 import { createFavourite } from "../../services/airtableService"
+import { useState, useEffect } from 'react'
+import { getMealById } from "../../services/mealdbService"
+
 
 function RecipeDetails() {
-    const location = useLocation()
-    const details = location.state?.meal
+    const { mealId } = useParams()
+    const [details, setDetails] = useState(null)
+
+    useEffect(() => {
+        async function fetchRecipe() {
+            const recipe = await getMealById(mealId)
+            setDetails(recipe)
+        }
+        fetchRecipe()
+    }, [mealId])
+
+    if (!details) {
+        return <div>Loading...</div>
+    }
 
     function getIngredientsList(details) {
         const ingredientsList = []
@@ -19,6 +33,7 @@ function RecipeDetails() {
         return ingredientsList
     }
 
+
     const ingredients = getIngredientsList(details)
 
     async function handleSave() {
@@ -27,25 +42,25 @@ function RecipeDetails() {
             title: details.strMeal,
             thumb: details.strMealThumb,
         }
-        try {
-            await createFavourite(fav)
-            console.log("Saved to favourites:", fav)
-        } catch (error) {
-            console.log("Did not save", error)
-        }
+        await createFavourite(fav)
     }
 
     return (
         <div>
             <h1>{details.strMeal}</h1>
             <img src={details.strMealThumb} alt={details.strMeal} />
-            <button onClick={handleSave}>Save</button>
-            <Link to="/"><button>Back</button></Link>
+
+            <div>
+                <button onClick={handleSave}>Save to Favourites</button>
+                <Link to="/"><button>Back to Search</button></Link>
+            </div>
 
             <h2>Ingredients</h2>
-            {ingredients.map((ingredientLine, index) => (
-                <li key={index}>{ingredientLine}</li>
-            ))}
+            <ul>
+                {ingredients.map((ingredientLine, index) => (
+                    <li key={index}>{ingredientLine}</li>
+                ))}
+            </ul>
 
             <h2>Instructions</h2>
             {details.strInstructions}
