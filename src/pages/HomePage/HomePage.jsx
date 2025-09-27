@@ -16,9 +16,10 @@ function HomePage({ onSave, favourites = [] }) {
         <div>
             <h1>Recipe Finder</h1>
             <input
+            className="border border-solid rounded-full"
                 value={searchTerm}
                 onChange={(event) => setSearchTerm(event.target.value)} />
-            <button onClick={handleSearch}>Search</button>
+            <button className="bg-blue-500" onClick={handleSearch}>Search</button>
             <div>
                 {searchResults
                     .filter((meal) => !favourites.some((fav) => fav.id === meal.idMeal))
