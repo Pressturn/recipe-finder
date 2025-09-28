@@ -25,8 +25,8 @@ function App() {
       setFavourites(items)
     } catch (error) {
       setFavourites([])
+      console.error("Failed to load favourites:", error);
     }
-
   };
 
   // Add a recipe to favourites
@@ -41,6 +41,7 @@ function App() {
       const newItem = { id: result.id, ...result.fields }
       setFavourites((prev) => [...prev, newItem])
     } catch (error) {
+      console.error("Error adding meal:", error);
     }
   }
 
@@ -61,7 +62,8 @@ function App() {
   }, []);
 
   return (
-    <div className="App" >
+
+    <div>
       <Header />
       <main>
         <Routes>
