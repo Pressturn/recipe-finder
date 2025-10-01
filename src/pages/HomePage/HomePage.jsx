@@ -5,11 +5,11 @@ import { Link } from "react-router-dom"
 
 function HomePage({ onSave, favourites = [] }) {
     const [searchTerm, setSearchTerm] = useState("")
-    const [searchResults, setSearchResults] = useState([])
+    const [recipes, setRecipes] = useState([])
 
     async function handleSearch() {
         const meals = await searchMealsByName(searchTerm)
-        setSearchResults(meals)
+        setRecipes(meals)
     }
 
     function isAlreadySaved(mealId) {
@@ -43,7 +43,7 @@ function HomePage({ onSave, favourites = [] }) {
             </div>
 
             <div className="grid grid-cols-4 gap-6 w-full">
-                {searchResults.map((meal) => (
+                {recipes.map((meal) => (
                     <div key={meal.idMeal} className=" rounded-lg shadow-md p-4">
 
 

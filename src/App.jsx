@@ -73,7 +73,7 @@ function App() {
           />
           <Route
             path="/favourites"
-            element={<FavouritePage items={favourites} onDelete={removeFavourite} />}
+            element={<FavouritePage favourites={favourites} onDelete={removeFavourite} />}
           />
           <Route
             path="/recipe/:mealId"
