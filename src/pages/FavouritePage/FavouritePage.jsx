@@ -1,4 +1,3 @@
-import React from 'react'
 import RecipeCard from "../../components/RecipeCard/RecipeCard"
 import { Link } from "react-router-dom"
 
@@ -12,7 +11,9 @@ function FavouritePage({ favourites, onDelete }) {
       ) : (
         <div className="grid grid-cols-4 gap-6 w-full">
           {favourites.map(favourite => (
-            <div key={favourite.id} className="rounded-lg shadow-md p-4">
+            <div
+              key={favourite.id}
+              className="rounded-lg shadow-md p-4">
               <RecipeCard
                 mealId={favourite.mealId}
                 title={favourite.title}
@@ -20,11 +21,10 @@ function FavouritePage({ favourites, onDelete }) {
                 onDelete={() => onDelete(favourite.id)}
               />
 
-
-
               <div>
                 <Link to={`/recipe/${favourite.mealId}`}>
-                  <button className="w-full py-1 px-2 text-sm bg-blue-500 text-white rounded mt-2">
+                  <button
+                    className="w-full py-1 px-2 text-sm bg-blue-500 text-white rounded mt-2">
                     View</button>
                 </Link>
               </div>

@@ -45,29 +45,21 @@ function HomePage({ onSave, favourites = [] }) {
             <div className="grid grid-cols-4 gap-6 w-full">
                 {recipes.map((meal) => (
                     <div key={meal.idMeal} className=" rounded-lg shadow-md p-4">
-
-
                         <RecipeCard
                             mealId={meal.idMeal}
                             title={meal.strMeal}
                             thumb={meal.strMealThumb}
+                            onSave={() => handleSave(meal)}
+                            isAlreadySaved={isAlreadySaved(meal.idMeal)}
                         />
-                        <div className="space-y-2">
-                            <button
-                                onClick={() => handleSave(meal)}
-                                disabled={isAlreadySaved(meal.idMeal)}
-                                className="w-full py-1 px-2 text-sm rounded bg-green-500 text-white"
-                            >
-                                {isAlreadySaved(meal.idMeal) ? "Saved" : "Save"}
-                            </button>
 
-                            <Link to={`/recipe/${meal.idMeal}`}>
-                                <button className="w-full py-1 px-2 text-sm bg-blue-500 text-white rounded">View</button>
-                            </Link>
-                        </div>
+                        <Link to={`/recipe/${meal.idMeal}`}>
+                            <button
+                                className="w-full py-1 px-2 text-sm bg-blue-500 text-white rounded">View</button>
+                        </Link>
                     </div>
                 ))}
-            </div>
+        </div>
         </div >
     )
 }
