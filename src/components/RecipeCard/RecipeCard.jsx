@@ -2,7 +2,7 @@ import React from 'react'
 
 function RecipeCard({ mealId, title, thumb, onSave, onDelete, isAlreadySaved }) {
     function handleSave() {
-        const favourite = { mealId: mealId, title, thumb: thumb }
+        const favourite = { mealId, title, thumb }
         onSave(favourite)
     }
 

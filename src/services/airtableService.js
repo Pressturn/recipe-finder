@@ -8,6 +8,7 @@ const getFavourites = async () => {
     throw new Error("Failed to fetch favourites");
   }
 
+  // Parses JSON
   return await response.json();
 };
 
@@ -23,6 +24,7 @@ const createFavourite = async (favourite) => {
     throw new Error("Failed to create favourite");
   }
 
+  // Parses JSON
   return await response.json();
 
 }
@@ -35,6 +37,8 @@ const deleteFavourite = async (id) => {
   if (!response.ok) {
     throw new Error("Failed to delete favourite");
   }
+
+  // Parses JSON
   return await response.json();
 }
 

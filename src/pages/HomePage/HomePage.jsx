@@ -12,15 +12,6 @@ function HomePage({ onSave, isAlreadySaved }) {
         setRecipes(meals)
     }
 
-    function handleSave(meal) {
-        const favourite = {
-            mealId: meal.idMeal,
-            title: meal.strMeal,
-            thumb: meal.strMealThumb
-        }
-        onSave(favourite)
-    }
-
     return (
         <div className="p-8 min-h-screen">
             <h1 className="text-3xl font-bold mb-8 text-center">Recipe Finder</h1>
@@ -45,7 +36,7 @@ function HomePage({ onSave, isAlreadySaved }) {
                             mealId={meal.idMeal}
                             title={meal.strMeal}
                             thumb={meal.strMealThumb}
-                            onSave={() => handleSave(meal)}
+                            onSave={onSave}
                             isAlreadySaved={isAlreadySaved(meal.idMeal)}
                         />
 
@@ -55,7 +46,7 @@ function HomePage({ onSave, isAlreadySaved }) {
                         </Link>
                     </div>
                 ))}
-        </div>
+            </div>
         </div >
     )
 }

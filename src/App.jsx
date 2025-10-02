@@ -10,17 +10,23 @@ import RecipeDetails from "./pages/RecipeDetails/RecipeDetails";
 function App() {
   const [favourites, setFavourites] = useState([]);
 
+  // Load favourites when app starts
+  useEffect(() => {
+    loadFavourites();
+  }, []);
+
   const loadFavourites = async () => {
     try {
       const data = await getFavourites();
 
       // Convert Airtable format to a simple array.
-      const items = data.records
-        ? data.records.map((record) => ({
+      const items = data.records ?
+        data.records.map((record) => ({
           id: record.id,
           ...record.fields
         }))
-        : data;
+        :
+        data;
 
       setFavourites(items)
     } catch (error) {
@@ -29,21 +35,10 @@ function App() {
     }
   };
 
-  // Load favourites when app starts
-  useEffect(() => {
-    loadFavourites();
-  }, []);
-
-
   // Add a recipe to favourites
   const addFavourite = async (meal) => {
     try {
-      const result = await createFavourite({
-        mealId: meal.mealId,
-        title: meal.title,
-        thumb: meal.thumb,
-      })
-
+      const result = await createFavourite(meal)
       const newItem = { id: result.id, ...result.fields }
       setFavourites((prev) => [...prev, newItem])
     } catch (error) {
@@ -64,8 +59,6 @@ function App() {
       console.error("Failed to delete favourite:", error)
     }
   };
-
-
 
   return (
     <div>
