@@ -1,39 +1,41 @@
 // src/services/airtableService.js
 
 // get all favourites from proxy server
-export const getFavourites = async () => {
-    const res = await fetch("http://localhost:3001/api/favourites");
+const getFavourites = async () => {
+  const response = await fetch("http://localhost:3001/api/favourites");
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch favourites");
-    }
+  if (!response.ok) {
+    throw new Error("Failed to fetch favourites");
+  }
 
-    return await res.json();
+  return await response.json();
 };
 
 // add a new favourite to Airtable through proxy
-export const createFavourite = async (fav) => {
-    const res = await fetch("http://localhost:3001/api/favourites", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(fav),
-    });
+const createFavourite = async (favourite) => {
+  const response = await fetch("http://localhost:3001/api/favourites", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(favourite),
+  });
 
-    if (!res.ok) {
-      throw new Error("Failed to create favourite");
-    }
-
-    return await res.json();
-
+  if (!response.ok) {
+    throw new Error("Failed to create favourite");
   }
+
+  return await response.json();
+
+}
 
 // delete a favourite by Airtable record id
-export const deleteFavourite = async (id) => {
-    const res = await fetch(`http://localhost:3001/api/favourites/${id}`, {
-      method: "DELETE",
-    });
-    if (!res.ok) {
-      throw new Error("Failed to delete favourite");
-    }
-    return await res.json();
+const deleteFavourite = async (id) => {
+  const response = await fetch(`http://localhost:3001/api/favourites/${id}`, {
+    method: "DELETE",
+  });
+  if (!response.ok) {
+    throw new Error("Failed to delete favourite");
   }
+  return await response.json();
+}
+
+export { getFavourites, createFavourite, deleteFavourite }

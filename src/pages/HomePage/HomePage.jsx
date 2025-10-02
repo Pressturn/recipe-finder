@@ -3,17 +3,13 @@ import { useState } from "react"
 import RecipeCard from "../../components/RecipeCard/RecipeCard"
 import { Link } from "react-router-dom"
 
-function HomePage({ onSave, favourites = [] }) {
+function HomePage({ onSave, isAlreadySaved }) {
     const [searchTerm, setSearchTerm] = useState("")
     const [recipes, setRecipes] = useState([])
 
     async function handleSearch() {
         const meals = await searchMealsByName(searchTerm)
         setRecipes(meals)
-    }
-
-    function isAlreadySaved(mealId) {
-        return favourites.some(fav => fav.mealId === mealId)
     }
 
     function handleSave(meal) {

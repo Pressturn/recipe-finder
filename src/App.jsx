@@ -29,6 +29,12 @@ function App() {
     }
   };
 
+  // Load favourites when app starts
+  useEffect(() => {
+    loadFavourites();
+  }, []);
+
+
   // Add a recipe to favourites
   const addFavourite = async (meal) => {
     try {
@@ -45,6 +51,10 @@ function App() {
     }
   }
 
+  function isAlreadySaved(mealId) {
+    return favourites.some(fav => fav.mealId === mealId)
+  }
+
   // Remove a recipe from favourites
   const removeFavourite = async (id) => {
     try {
@@ -56,28 +66,34 @@ function App() {
   };
 
 
-  // Load favourites when app starts
-  useEffect(() => {
-    loadFavourites();
-  }, []);
 
   return (
-
     <div>
       <Header />
       <main>
         <Routes>
           <Route
             path="/"
-            element={<HomePage onSave={addFavourite} favourites={favourites} />}
+            element={
+              <HomePage
+                onSave={addFavourite}
+                favourites={favourites}
+                isAlreadySaved={isAlreadySaved} />}
           />
           <Route
             path="/favourites"
-            element={<FavouritePage favourites={favourites} onDelete={removeFavourite} />}
+            element={
+              <FavouritePage
+                favourites={favourites}
+                onDelete={removeFavourite} />}
           />
           <Route
             path="/recipe/:mealId"
-            element={<RecipeDetails />}
+            element={
+              <RecipeDetails
+                onSave={addFavourite}
+                favourites={favourites}
+                isAlreadySaved={isAlreadySaved} />}
           />
         </Routes>
       </main>

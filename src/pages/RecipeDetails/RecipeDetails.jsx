@@ -1,10 +1,8 @@
 import { useParams, Link } from "react-router-dom"
-import { createFavourite } from "../../services/airtableService"
 import { useState, useEffect } from 'react'
 import { getMealById } from "../../services/mealdbService"
 
-
-function RecipeDetails() {
+function RecipeDetails({ onSave, isAlreadySaved }) {
     const { mealId } = useParams()
     const [recipe, setRecipe] = useState(null)
 
@@ -33,7 +31,6 @@ function RecipeDetails() {
         return ingredientsList
     }
 
-
     const ingredients = getIngredientsList(recipe)
 
     async function handleSave() {
@@ -42,7 +39,7 @@ function RecipeDetails() {
             title: recipe.strMeal,
             thumb: recipe.strMealThumb,
         }
-        await createFavourite(favourite)
+        await onSave(favourite)
     }
 
     return (
@@ -59,12 +56,17 @@ function RecipeDetails() {
                     <div className="space-x-4">
                         <button
                             onClick={handleSave}
+                            disabled={isAlreadySaved(recipe.idMeal)}
                             className="px-6 py-3 bg-green-500 text-white rounded text-lg"
-                        >Save to Favourites</button>
+                        >
+{isAlreadySaved(recipe.idMeal) ? "Saved" : "Save"}
+                        </button>
+
                         <Link to="/">
                             <button
                                 className="px-6 py-3 bg-blue-500 text-white rounded text-lg">
-                                Back to Search</button></Link>
+                                Back to Search</button>
+                                </Link>
                     </div>
                 </div>
                 <div>
@@ -83,7 +85,7 @@ function RecipeDetails() {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
