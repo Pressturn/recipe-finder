@@ -2,18 +2,18 @@ const BASE_URL = "https://www.themealdb.com/api/json/v1/1/search.php?s="
 
 const searchMealsByName = async (searchTerm) => {
     try {
-        const response = await fetch(`${BASE_URL}${searchTerm}`)
+        const mealDbResponse = await fetch(`${BASE_URL}${searchTerm}`)
 
-        if (!response.ok) {
+        if (!mealDbResponse.ok) {
             throw new Error("Failed to fetch meals");
         }
 
-        const data = await response.json();
-        if (!data.meals) {
+        const mealDbData = await mealDbResponse.json();
+        if (!mealDbData.meals) {
             return [];
         }
 
-        return data.meals
+        return mealDbData.meals
     } catch (error) {
         console.error('Error fetching data', error);
         return [];
@@ -22,14 +22,15 @@ const searchMealsByName = async (searchTerm) => {
 
 const getMealById = async (mealId) => {
     try {
-        const response = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
-        const data = await response.json()
+        const mealDbResponse = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`)
+        const mealDbData = await mealDbResponse.json()
 
-        if (!data.meals) {
+        if (!mealDbData.meals) {
             return null
         }
 
-        return data.meals[0]
+        // API returns an array with a single meal object
+        return mealDbData.meals[0]
     } catch (error) {
         console.error("Failed to get meal:", error)
         return null

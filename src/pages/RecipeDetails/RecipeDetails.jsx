@@ -57,16 +57,16 @@ function RecipeDetails({ onSave, isAlreadySaved }) {
                         <button
                             onClick={handleSave}
                             disabled={isAlreadySaved(recipe.idMeal)}
-                            className="px-6 py-3 bg-green-500 text-white rounded text-lg"
+                            className="px-6 py-3 text-white rounded text-lg"
                         >
-{isAlreadySaved(recipe.idMeal) ? "Saved" : "Save"}
+                            {isAlreadySaved(recipe.idMeal) ? "Saved" : "Save"}
                         </button>
 
                         <Link to="/">
                             <button
-                                className="px-6 py-3 bg-blue-500 text-white rounded text-lg">
+                                className="px-6 py-3 text-white rounded text-lg">
                                 Back to Search</button>
-                                </Link>
+                        </Link>
                     </div>
                 </div>
                 <div>

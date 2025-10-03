@@ -25,7 +25,7 @@ function HomePage({ onSave, isAlreadySaved }) {
                 />
 
                 <button
-                    className="px-8 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                    className="px-8 py-3 text-white rounded-lg hover:bg-blue-600"
                     onClick={handleSearch}>Search</button>
             </div>
 
@@ -42,7 +42,7 @@ function HomePage({ onSave, isAlreadySaved }) {
 
                         <Link to={`/recipe/${meal.idMeal}`}>
                             <button
-                                className="w-full py-1 px-2 text-sm bg-blue-500 text-white rounded">View</button>
+                                className="w-full py-1 px-2 text-sm text-white rounded">View</button>
                         </Link>
                     </div>
                 ))}

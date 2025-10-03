@@ -1,5 +1,3 @@
-import React from 'react'
-
 function RecipeCard({ mealId, title, thumb, onSave, onDelete, isAlreadySaved }) {
     function handleSave() {
         const favourite = { mealId, title, thumb }
@@ -20,13 +18,13 @@ function RecipeCard({ mealId, title, thumb, onSave, onDelete, isAlreadySaved }) 
                     <button
                         onClick={handleSave}
                         disabled={isAlreadySaved}
-                        className="w-full py-1 px-2 text-sm bg-green-500 text-white rounded">
+                        className="w-full py-1 px-2 text-sm text-white rounded">
                         {isAlreadySaved ? "Saved" : "Save"} </button>
                 )}
                 {onDelete && (
                     <button
                         onClick={onDelete}
-                        className="w-full py-1 px-2 text-sm bg-red-500 text-white rounded"
+                        className="w-full py-1 px-2 text-sm text-white rounded"
                     >Delete</button>
                 )}
             </div>

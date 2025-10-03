@@ -24,7 +24,7 @@ function FavouritePage({ favourites, onDelete }) {
               <div>
                 <Link to={`/recipe/${favourite.mealId}`}>
                   <button
-                    className="w-full py-1 px-2 text-sm bg-blue-500 text-white rounded mt-2">
+                    className="w-full py-1 px-2 text-sm text-white rounded mt-2">
                     View</button>
                 </Link>
               </div>

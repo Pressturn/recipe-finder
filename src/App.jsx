@@ -20,7 +20,7 @@ function App() {
       const data = await getFavourites();
 
       // Convert Airtable format to a simple array.
-      const items = data.records ?
+      const allFavourite = data.records ?
         data.records.map((record) => ({
           airtableId: record.id,
           ...record.fields
@@ -28,7 +28,8 @@ function App() {
         :
         data;
 
-      setFavourites(items)
+      setFavourites(allFavourite)
+
     } catch (error) {
       setFavourites([])
       console.error("Failed to load favourites:", error);
@@ -39,6 +40,8 @@ function App() {
   const addFavourite = async (meal) => {
     try {
       const result = await createFavourite(meal)
+
+      // Flatten Airtable's nested structure into a single object
       const newFavourite = { airtableId: result.id, ...result.fields }
       setFavourites((prev) => [...prev, newFavourite])
     } catch (error) {
