@@ -1,12 +1,47 @@
-# React + Vite
+# Recipe Finder App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple recipe search application built with React and Airtable where you can search for meals, view details, and save your favorites.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Recipe Discovery
 
-## Expanding the ESLint configuration
+- Search recipes by name using **TheMealDB API**
+- View detailed recipe information including ingredients and cooking instructions
+- Browse recipes in a clean grid layout
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Favorites 
+
+- Save favorite recipes to Airtable 
+- View all saved recipes in favorites page
+- Delete recipes from your favorites list
+
+## Screenshots
+
+**Home Page - Search Recipes**: Search for any recipe and browse results
+
+![Home Page](<src/assets/HomePage Search.png>)
+
+**Recipe Details**: View full recipe with ingredients and instructions
+
+![Recipe Details](<src/assets/Recipe%20Details.png>)
+
+**Favorites Page**: Manage all your saved recipes in one place
+
+![Favorites Page](<src/assets/Favourite%20Recipes.png>)
+
+## Tech Stack
+
+- **Frontend:** React, React Router, Tailwind CSS
+- **Backend:** Node.js, Express.js
+- **Database:** Airtable
+- **API:** TheMealDB API
+
+## Future Improvements
+
+- Add search by ingredient, country, most viewed, highest ratings, higest shares 
+- Add ratings, share button
+- Add notes in favourite recipe
+- Meal planner function 
+- Profile creation which allows anybody to upload and access community recipies
+- Responsive design for mobile
