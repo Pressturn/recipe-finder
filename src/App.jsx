@@ -3,9 +3,9 @@ import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
 import HomePage from "./pages/HomePage/HomePage";
 import FavouritePage from "./pages/FavouritePage/FavouritePage";
+import RecipeDetails from "./pages/RecipeDetails/RecipeDetails";
 import { useState, useEffect } from "react";
 import { getFavourites, createFavourite, deleteFavourite, } from "./services/airtableService";
-import RecipeDetails from "./pages/RecipeDetails/RecipeDetails";
 
 function App() {
   const [favourites, setFavourites] = useState([]);
@@ -22,7 +22,7 @@ function App() {
       // Convert Airtable format to a simple array.
       const items = data.records ?
         data.records.map((record) => ({
-          id: record.id,
+          airtableId: record.id,
           ...record.fields
         }))
         :
@@ -39,8 +39,8 @@ function App() {
   const addFavourite = async (meal) => {
     try {
       const result = await createFavourite(meal)
-      const newItem = { id: result.id, ...result.fields }
-      setFavourites((prev) => [...prev, newItem])
+      const newFavourite = { airtableId: result.id, ...result.fields }
+      setFavourites((prev) => [...prev, newFavourite])
     } catch (error) {
       console.error("Error adding meal:", error);
     }
@@ -51,10 +51,10 @@ function App() {
   }
 
   // Remove a recipe from favourites
-  const removeFavourite = async (id) => {
+  const removeFavourite = async (airtableId) => {
     try {
-      await deleteFavourite(id)
-      setFavourites((prev) => prev.filter((item) => item.id !== id))
+      await deleteFavourite(airtableId)
+      setFavourites((prev) => prev.filter((item) => item.airtableId !== airtableId))
     } catch (error) {
       console.error("Failed to delete favourite:", error)
     }

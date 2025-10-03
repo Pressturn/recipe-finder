@@ -1,6 +1,6 @@
 // src/services/airtableService.js
 
-// get all favourites from proxy server
+// get reqeust of all favourites from proxy server
 const getFavourites = async () => {
   const response = await fetch("http://localhost:3001/api/favourites");
 
@@ -12,7 +12,7 @@ const getFavourites = async () => {
   return await response.json();
 };
 
-// add a new favourite to Airtable through proxy
+// post request to add a new favourite to Airtable through proxy
 const createFavourite = async (favourite) => {
   const response = await fetch("http://localhost:3001/api/favourites", {
     method: "POST",
@@ -30,8 +30,8 @@ const createFavourite = async (favourite) => {
 }
 
 // delete a favourite by Airtable record id
-const deleteFavourite = async (id) => {
-  const response = await fetch(`http://localhost:3001/api/favourites/${id}`, {
+const deleteFavourite = async (airtableId) => {
+  const response = await fetch(`http://localhost:3001/api/favourites/${airtableId}`, {
     method: "DELETE",
   });
   if (!response.ok) {

@@ -68,9 +68,9 @@ app.delete("/api/favourites/:id", async (request, res) => {
   try {
     
     // Extract record ID from URL parameter
-    const { id } = request.params;
+    const { airtableId } = request.params;
 
-    const response = await fetch(`${AIRTABLE_BASE_URL}/${AIRTABLE_TABLE}/${id}`, {
+    const response = await fetch(`${AIRTABLE_BASE_URL}/${AIRTABLE_TABLE}/${airtableId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${AIRTABLE_API_KEY}` },
     });

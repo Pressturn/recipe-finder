@@ -12,13 +12,13 @@ function FavouritePage({ favourites, onDelete }) {
         <div className="grid grid-cols-4 gap-6 w-full">
           {favourites.map(favourite => (
             <div
-              key={favourite.id}
+              key={favourite.airtableId}
               className="rounded-lg shadow-md p-4">
               <RecipeCard
                 mealId={favourite.mealId}
                 title={favourite.title}
                 thumb={favourite.thumb}
-                onDelete={() => onDelete(favourite.id)}
+                onDelete={() => onDelete(favourite.airtableId)}
               />
 
               <div>

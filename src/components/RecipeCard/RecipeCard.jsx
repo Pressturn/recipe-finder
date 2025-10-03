@@ -25,7 +25,7 @@ function RecipeCard({ mealId, title, thumb, onSave, onDelete, isAlreadySaved }) 
                 )}
                 {onDelete && (
                     <button
-                        onClick={() => onDelete(mealId)}
+                        onClick={onDelete}
                         className="w-full py-1 px-2 text-sm bg-red-500 text-white rounded"
                     >Delete</button>
                 )}
